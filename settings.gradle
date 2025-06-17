@@ -1,1 +1,1 @@
-include ('quickstart:wordcount')
+include (':quickstart:wordcount')
