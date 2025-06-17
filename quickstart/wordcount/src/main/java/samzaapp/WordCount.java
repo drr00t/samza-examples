@@ -3,13 +3,13 @@ package samzaapp;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import joptsimple.OptionSet;
 import org.apache.samza.application.StreamApplication;
-import org.apache.samza.application.StreamApplicationDescriptor;
+import org.apache.samza.application.descriptors.StreamApplicationDescriptor;
 import org.apache.samza.config.Config;
+import org.apache.samza.config.MapConfig;
 import org.apache.samza.operators.KV;
 import org.apache.samza.operators.MessageStream;
 import org.apache.samza.operators.OutputStream;
@@ -18,9 +18,10 @@ import org.apache.samza.runtime.LocalApplicationRunner;
 import org.apache.samza.serializers.IntegerSerde;
 import org.apache.samza.serializers.KVSerde;
 import org.apache.samza.serializers.StringSerde;
-import org.apache.samza.system.kafka.KafkaInputDescriptor;
-import org.apache.samza.system.kafka.KafkaOutputDescriptor;
-import org.apache.samza.system.kafka.KafkaSystemDescriptor;
+import org.apache.samza.system.kafka.descriptors.KafkaInputDescriptor;
+import org.apache.samza.system.kafka.descriptors.KafkaOutputDescriptor;
+import org.apache.samza.system.kafka.descriptors.KafkaSystemDescriptor;
+
 import org.apache.samza.util.CommandLine;
 
 public class WordCount implements StreamApplication {
@@ -64,7 +65,16 @@ public class WordCount implements StreamApplication {
   public static void main(String[] args) {
     CommandLine cmdLine = new CommandLine();
     OptionSet options = cmdLine.parser().parse(args);
-    Config config = cmdLine.loadConfig(options);
+    Map<String,String> props = new HashMap<>();
+    props.put("job.name","word-count");
+    props.put("job.coordinator.factory","org.apache.samza.standalone.PassthroughJobCoordinatorFactory");
+    props.put("job.coordination.utils.factory","org.apache.samza.standalone.PassthroughCoordinationUtilsFactory");
+    props.put("job.changelog.system","kafka");
+    props.put("task.name.grouper.factory","org.apache.samza.container.grouper.task.SingleContainerGrouperFactory");
+    props.put("processor.id","0");
+    props.put("systems.kafka.default.stream.samza.offset.default","oldest");
+
+    Config config =  new MapConfig(props);
     LocalApplicationRunner runner = new LocalApplicationRunner(new WordCount(), config);
     runner.run();
     runner.waitForFinish();

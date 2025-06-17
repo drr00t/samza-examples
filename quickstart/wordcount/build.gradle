@@ -1,0 +1,16 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation('org.apache.samza:samza-api:1.8.0')
+    implementation('org.apache.samza:samza-kv_2.12:1.8.0')
+    implementation('org.apache.samza:samza-kafka_2.12:1.8.0')
+    implementation('org.apache.samza:samza-kv-rocksdb_2.12:1.8.0')
+    implementation('org.apache.samza:samza-log4j_2.12:1.8.0')
+    implementation('org.apache.samza:samza-yarn_2.12:1.8.0')
+}
