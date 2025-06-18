@@ -1,4 +1,4 @@
-package samzaapp;
+package org.apache.samza.quickstart;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

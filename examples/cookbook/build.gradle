@@ -24,4 +24,5 @@ dependencies {
     implementation("org.apache.samza:samza-kafka_2.12:${samzaVersion}")
     implementation("org.apache.samza:samza-kv-rocksdb_2.12:${samzaVersion}")
     implementation("org.apache.samza:samza-log4j_2.12:${samzaVersion}")
+    implementation("org.apache.samza:samza-kv-couchbase_2.12:${samzaVersion}")
 }
